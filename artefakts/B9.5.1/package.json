@@ -1,11 +1,19 @@
 {
-  "name": "skill-facktory-b9.5.1",
+  "name": "skill-facktory-b951",
   "version": "1.0.0",
-  "description": "practice for B9.5.1 skill-factory",
+  "description": "Hello. This is practice for B9.5.1 Skill factory",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foxland17/skill.git#main"
+  },
   "author": "rahmatjon umarov",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foxland17/skill/issues"
+  },
+  "homepage": "https://github.com/foxland17/skill/tree/main#readme"
 }
