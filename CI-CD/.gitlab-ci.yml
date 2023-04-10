@@ -1,0 +1,28 @@
+---
+image: "ubuntu:latest"
+
+
+workflow:
+  rules:
+    - changes:
+        - select.sql
+
+
+stages:
+  - runselect
+
+
+runselect:
+
+  image: alpine:latest
+
+  stage: runselect
+
+  tags:
+    - skillfaktory
+  before_script:
+    - apt update
+    - apt install mysql-client
+
+  script:
+    - mysql --user rfamro --host mysql-rfam-public.ebi.ac.uk --port 4497 --database Rfam -e 'source query.sql'
