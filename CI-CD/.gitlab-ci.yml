@@ -5,7 +5,7 @@ image: "ubuntu:latest"
 workflow:
   rules:
     - changes:
-        - select.sql
+        - query.sql
 
 
 stages:
