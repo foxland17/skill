@@ -1,0 +1,70 @@
+#Создадим правила, чтобы CI CD работало только при изменение index.html
+workflow:
+  rules:
+    - changes:
+        - index.html
+
+# Установим переменные: имя контейнера, имя образа и стратегия гита в runner.      
+
+variables:
+  APP_NAME: skill-hw03
+  IMAGE_NAME: hw03
+  GIT_STRATEGY: clone
+
+#   Устанивим stage
+stages:
+  - build image
+  - deploy
+  - check_status_code
+  - chekc_md5
+  - delete
+
+#  Создадим докер образа  
+build image:
+    stage: build image
+    tags:
+    - shell
+    script:
+    - echo `pwd`
+    - bash script.sh $IMAGE_NAME
+
+
+
+#Запускаем контейнера по созданным образу. Перебросим порты. 
+deploy:
+  stage: deploy
+  tags:
+    - shell
+  script:
+    sudo docker run -dp 9889:80 --name $APP_NAME $IMAGE_NAME
+
+
+# Проверяем доступность веб сайта и код ответа. При ошибке отправим email.
+check_status_code:
+  stage: check_status_code
+  tags:
+    - shell
+  script:
+    - response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9889/index.html)
+    - echo "$response is response code"
+    - if [[ $response == "200" ]]; then echo "No Problem"; else echo "Response code is $response" | mail -s "Huston, we have a problem!!! " "info@mycomp.uz"; fi
+
+# Проверяем md5 оригинал файла index.html с файлом от веб сервера. При ошибке отправим email.
+chekc_md5:
+  stage: chekc_md5
+  tags:
+    - shell
+  script:
+    - curl http://localhost:9889/index.html  --output from_site.html 
+    - a=$(md5sum index.html | awk '{print $1}')
+    - b=$(md5sum from_site.html | awk '{print $1}')
+    - if [[ "$a" == "$b" ]]; then echo "No problem"; else  echo "index.html is not confirm md5" | mail -s "Huston, we have a problem!!! " "info@mycomp.uz"; fi
+
+# Останавливаем и удаляем контейнер.
+delete:
+  stage: delete
+  tags:
+    - shell
+  script:
+    - sudo docker stop $APP_NAME
+    - sudo docker rm $APP_NAME
