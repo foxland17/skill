@@ -1,8 +1,8 @@
-##Описание:
-gitlab-runner запушен в ОС Centos 7. executor  shell
-Требуется установит компоненты curl, mail.
+## РћРїРёСЃР°РЅРёРµ:
+gitlab-runner Р·Р°РїСѓС€РµРЅ РІ РћРЎ Centos 7. executor  shell
+РўСЂРµР±СѓРµС‚СЃСЏ СѓСЃС‚Р°РЅРѕРІРёС‚ РєРѕРјРїРѕРЅРµРЅС‚С‹ curl, mail, docker-ce, docker-ce-cli.
 
-В ОС пользователю gitlub-runner дать права sudo:
+Р’ РћРЎ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ gitlub-runner РґР°С‚СЊ РїСЂР°РІР° sudo:
 ```
 gitlab-runner ALL=(ALL) NOPASSWD:/usr/bin/docker 
 ```
